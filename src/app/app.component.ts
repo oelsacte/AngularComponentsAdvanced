@@ -9,4 +9,8 @@ export class AppComponent {
 
   constructor() { }
 
+  logCountdownEnd(){
+    console.log('The countdown is finished');
+  }
+
 }
