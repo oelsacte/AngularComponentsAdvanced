@@ -2,7 +2,6 @@ import { TimerService } from './timer/timer.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { ProgressBarComponent } from "./progress-bar/progress-bar.component";
@@ -12,7 +11,7 @@ import { AlertViewComponent } from './alert-view/alert-view.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tab/tab.component';
 import { SimpleAlertViewComponent } from './simple-alert-view/simple-alert-view.component';
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 @NgModule({
@@ -29,7 +28,7 @@ import { SimpleAlertViewComponent } from './simple-alert-view/simple-alert-view.
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
