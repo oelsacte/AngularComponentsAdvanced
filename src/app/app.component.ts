@@ -9,9 +9,15 @@ export class AppComponent {
 
   public isAddTimerVisible = false;
 
+  public isEndTimerAlertVisible = false;
+
   public time:number = 0;
 
-  constructor() { }
+  public timers: Array<number> = [];
+
+  constructor() { 
+    this.timers = [3, 20, 185];
+  }
 
   logCountdownEnd(){
     console.log('The countdown is finished');
@@ -23,6 +29,19 @@ export class AppComponent {
   
   public hideAddTimer() {
     this.isAddTimerVisible = false;
+  }
+
+  public showEndTimerAlert() {
+    this.isEndTimerAlertVisible = true;
+  }
+
+  public hideEndTimerAlert() {
+    this.isEndTimerAlertVisible = false;
+  }
+
+  public submitAddTimer() {
+    this.timers.push(this.time);
+    this.hideAddTimer();
   }
 
 }
