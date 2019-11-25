@@ -1,4 +1,4 @@
-import { Component, OnInit, ContentChild, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ContentChildren, QueryList } from '@angular/core';
 import { TabComponent } from "app/tab/tab.component";
 import { Tab } from "../tab/tab.interface";
 import { Subscription } from 'rxjs';
@@ -11,40 +11,43 @@ import { Subscription } from 'rxjs';
 })
 export class TabsComponent implements OnInit, AfterContentInit {
   
-  @ContentChild(TabComponent) tab: TabComponent;
+  @ContentChildren(TabComponent) public tabs: QueryList<TabComponent>;
   
-  public tabs:Tab[] = [];
+  // public tabs:Tab[] = [];
 
-  private tabClickSubscription: Subscription;
+  private tabClickSubscription: any[] = [];
   
   constructor() { }
   
   ngOnInit() {
     if(this.tabClickSubscription) {
-      this.tabClickSubscription.unsubscribe();
+      this.tabClickSubscription.forEach(element => element.unsubscribe());
     }
   }
   
   ngAfterContentInit(): void {
-    if(this.tab) {
-      console.log(this.tab);
-      this.addTab(this.tab);
-      this.tabClickSubscription = this.tab.onClick.subscribe(()=>{console.log('tab content click detected');});
-    }
-  }
-
-  addTab(tab:Tab){
-    if (this.tabs.length === 0) {
-      tab.isActive = true;
-    }
-    this.tabs.push(tab);
+    console.log(this.tabs);
+    this.tabs.forEach(tab=>{
+      let subscription = tab.onClick.subscribe(()=>{
+        console.log(`tab ${tab.title} content clicked`);
+      })
+      this.tabClickSubscription.push(subscription);
+    });
+    this.selectTab(this.tabs.first);
+    // if(this.tab) {
+    //   console.log(this.tab);
+    //   this.addTab(this.tab);
+    //   this.tabClickSubscription = this.tab.onClick.subscribe(()=>{console.log('tab content click detected');});
+    // }
   }
 
   selectTab(tab:Tab) {
-    for (let tab of this.tabs){
-      tab.isActive = false;
-    }
+    this.tabs.forEach(tab => tab.isActive = false);
     tab.isActive = true;
+    // for (let tab of this.tabs){
+    //   tab.isActive = false;
+    // }
+    // tab.isActive = true;
   }
   
 
