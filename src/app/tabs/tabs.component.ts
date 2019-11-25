@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ContentChild, AfterContentInit } from '@angular/core';
 import { TabComponent } from "app/tab/tab.component";
 import { Tab } from "../tab/tab.interface";
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -8,13 +9,28 @@ import { Tab } from "../tab/tab.interface";
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']
 })
-export class TabsComponent implements OnInit {
-
+export class TabsComponent implements OnInit, AfterContentInit {
+  
+  @ContentChild(TabComponent) tab: TabComponent;
+  
   public tabs:Tab[] = [];
 
+  private tabClickSubscription: Subscription;
+  
   constructor() { }
-
+  
   ngOnInit() {
+    if(this.tabClickSubscription) {
+      this.tabClickSubscription.unsubscribe();
+    }
+  }
+  
+  ngAfterContentInit(): void {
+    if(this.tab) {
+      console.log(this.tab);
+      this.addTab(this.tab);
+      this.tabClickSubscription = this.tab.onClick.subscribe(()=>{console.log('tab content click detected');});
+    }
   }
 
   addTab(tab:Tab){
