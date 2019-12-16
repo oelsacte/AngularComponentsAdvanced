@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class TabsComponent implements OnInit, AfterContentInit {
   
-  @ContentChild(TabComponent) tab: TabComponent;
+  @ContentChild(TabComponent, { static: true}) tab: TabComponent;
   
   public tabs:Tab[] = [];
 
